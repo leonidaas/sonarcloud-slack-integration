@@ -21,6 +21,12 @@ def sonarqube():
         result = response.text
     return result
 
+@route('/slackmonitor')
+def slackmonitor():
+    response = requests.post(SLACK_SONAR_WEBHOOK_URL,
+                                 data=json.dumps({"text": "Heroku funktioniert"}), headers={'Content-type': 'application/json'})
+
+    return response.text
 
 @route('/monitor')
 def monitor():
