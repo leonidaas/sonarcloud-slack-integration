@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import json
 import os
-
 import requests
 from bottle import route, run, request
 
@@ -13,18 +12,24 @@ def sonarqube():
     postdata = json.loads(request.body.read())
 
     result = "OK"
+    text = ""
     if postdata['qualityGate']['status'] == "ERROR":
         text = f"{postdata['project']['name']} is failing the quality gate. " \
             f"\n\nBetter go check it out <{postdata['branch']['url']}> "
-        response = requests.post(SLACK_SONAR_WEBHOOK_URL,
-                                 data=json.dumps({"text": text}), headers={'Content-type': 'application/json'})
-        result = response.text
+    else: 
+        text = "Quality gate successfully passed"
+
+    send_slack_message(text)
     return result
+
+def send_slack_message(text):
+    response = requests.post(SLACK_SONAR_WEBHOOK_URL,
+                             data=json.dumps({"text": text}), headers={'Content-type': 'application/json'})
+    return response.text
 
 @route('/slackmonitor')
 def slackmonitor():
-    response = requests.post(SLACK_SONAR_WEBHOOK_URL,
-                                 data=json.dumps({"text": "Heroku funktioniert"}), headers={'Content-type': 'application/json'})
+    response = requests.post(SLACK_SONAR_WEBHOOK_URL, data=json.dumps({"text": "Heroku funktioniert"}), headers={'Content-type': 'application/json'})
 
     return response.text
 
