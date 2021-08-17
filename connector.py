@@ -17,7 +17,7 @@ def sonarqube():
         text = f"{postdata['project']['name']} is failing the quality gate. " \
             f"\n\nBetter go check it out <{postdata['branch']['url']}> "
     else: 
-        text = "Quality gate successfully passed"
+        text = postdata
 
     send_slack_message(text)
     return result
