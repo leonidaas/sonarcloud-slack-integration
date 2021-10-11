@@ -16,7 +16,7 @@ def sonarqube():
     if postdata['qualityGate']['status'] == "ERROR":
         text = "*" + postdata['project']['name'] + "*"  + " is *failing* the quality gate. :red_circle: "
         for item in postdata['qualityGate']['conditions']:
-            text += "\n____________________________"
+            text += "\n--------------"
             text += "\n" + "*Metric:* " + item['metric']
             text += "\n" + "*Value:* " + item['value']
             text += "\n" + "*Status:* " + item['status']
@@ -24,7 +24,7 @@ def sonarqube():
     if postdata['qualityGate']['status'] == "OK":
         text = "*" + postdata['project']['name'] + "*" + " is *passing* the quality gate. :white_check_mark: " 
         for item in postdata['qualityGate']['conditions']:
-            text += "\n____________________________"
+            text += "\n--------------"
             text += "\n" + "*Metric:* " + item['metric']
             text += "\n" + "*Value:* " + item['value']
             text += "\n" + "*Status:* " + item['status']
