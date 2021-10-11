@@ -14,8 +14,11 @@ def sonarqube():
     result = "OK"
     text = ""
     if postdata['qualityGate']['status'] == "ERROR":
-        text = f"{postdata['project']['name']} is failing the quality gate. " \
-            f"\n\nBetter go check it out <{postdata['branch']['url']}> "
+        text = postdata['project']['name'] + " is failing the quality gate. "
+        for item in postdata['qualityGate']['conditions']:
+            text = text + "\n" + item['message']
+            text = text + "\n" + item['value']
+            
     else: 
         text = postdata['project']['name'] + " is passing the quality gate. " 
         for item in postdata['qualityGate']['conditions']:
