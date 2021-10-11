@@ -14,18 +14,18 @@ def sonarqube():
     result = "OK"
     text = ""
     if postdata['qualityGate']['status'] == "ERROR":
-        text = "*" + postdata['project']['name'] + "*"  + " is *failing* the quality gate. "
+        text = "*" + postdata['project']['name'] + "*"  + " is *failing* the quality gate. :rundumleuchte: "
         for item in postdata['qualityGate']['conditions']:
-            text = text + "\n" + "Metric: " + item['metric']
-            text = text + "\n" + "Value: " + item['value']
-            text = text + "\n" + "Status: " + item['status']
+            text += "\n" + "Metric: " + item['metric']
+            text += "\n" + "Value: " + item['value']
+            text += "\n" + "Status: " + item['status']
             
     if postdata['qualityGate']['status'] == "OK":
-        text = "*" + postdata['project']['name'] + "*" + " is *passing* the quality gate. " 
+        text = "*" + postdata['project']['name'] + "*" + " is *passing* the quality gate. :weißes_häkchen: " 
         for item in postdata['qualityGate']['conditions']:
-            text = text + "\n" + "Metric: " + item['metric']
-            text = text + "\n" + "Value: " + item['value']
-            text = text + "\n" + "Status: " + item['status']
+            text += "\n" + "Metric: " + item['metric']
+            text += "\n" + "Value: " + item['value']
+            text += "\n" + "Status: " + item['status']
 
     send_slack_message(text)
     return result
