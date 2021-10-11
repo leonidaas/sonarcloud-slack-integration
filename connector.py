@@ -10,19 +10,19 @@ SLACK_SONAR_WEBHOOK_URL = os.environ["SLACK_SONAR_WEBHOOK_URL"]
 @route('/sonarqube', method='POST')
 def sonarqube():
     postdata = json.loads(request.body.read())
-
+    
     result = "OK"
     text = ""
     if postdata['qualityGate']['status'] == "ERROR":
         text = postdata['project']['name'] + " is failing the quality gate. "
         for item in postdata['qualityGate']['conditions']:
-            text = text + "\n" + item['message']
+            text = text + "\n" + item['metric']
             text = text + "\n" + item['value']
             
-    else: 
+    if postdata['qualityGate']['status'] == "OK":
         text = postdata['project']['name'] + " is passing the quality gate. " 
         for item in postdata['qualityGate']['conditions']:
-            text = text + "\n" + item['message']
+            text = text + "\n" + item['metric']
             text = text + "\n" + item['value']
 
     send_slack_message(text)
@@ -35,7 +35,7 @@ def send_slack_message(text):
 
 @route('/slackmonitor')
 def slackmonitor():
-    response = requests.post(SLACK_SONAR_WEBHOOK_URL, data=json.dumps({"text": "Heroku funktioniert"}), headers={'Content-type': 'application/json'})
+    response = requests.post(SLACK_SONAR_WEBHOOK_URL, data=json.dumps({"text": "Service is up and running"}), headers={'Content-type': 'application/json'})
 
     return response.text
 
